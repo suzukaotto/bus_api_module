@@ -17,7 +17,7 @@ class BusAPI:
         
         result = utils.request_get_http(url, params, ['response', 'msgBody', 'busArrivalList'])
         if type(result['result']) != list:
-            result['result'] = [result['result']]
+            result['result'] = [] if result['result'] == None else [result['result']]
         
         self.arvl_bus_data = result
         return result
@@ -42,7 +42,9 @@ class BusAPI:
         result = utils.request_get_http(url, params, ['response', 'msgBody', 'busRouteStationList'])
         return result
     
-    def get_arvl_bus_detail_data(self):
+    def update_arvl_bus_data(self):
+        self.get_arvl_bus_data()
+        
         if (self.arvl_bus_data['resCode'] in ['0', '00']) == False:
             return False
         
@@ -59,6 +61,3 @@ class BusAPI:
                 'busInfo': arvl_bus_info['result'],
                 'busRouteInfo': arvl_bus_route_info['result']
             })
-        
-        with open('arvl_bus_data.json', 'w', encoding='utf-8') as f:
-            json.dump(self.arvl_bus_data, f, ensure_ascii=False, indent=4)

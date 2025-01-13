@@ -1,3 +1,4 @@
+import json
 import os
 import bus_api as _bus_api
 
@@ -16,7 +17,7 @@ station_data = {
 }
 
 bus_api = _bus_api.BusAPI(service_key, station_data)
-bus_api.get_arvl_bus_data()
-print(bus_api.arvl_bus_data)
-result = bus_api.get_arvl_bus_detail_data()
-print(result)
+bus_api.update_arvl_bus_data()
+
+with open('arvl_bus_data.json', 'w', encoding='utf-8') as f:
+    json.dump(bus_api.arvl_bus_data, f, ensure_ascii=False, indent=4)
